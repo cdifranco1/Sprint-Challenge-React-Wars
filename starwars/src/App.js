@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import CardContainer from './components/CardContainer';
 import SearchBar from "./components/SearchBar";
-import Pagination from "./components/Pagination";
+import CustomPagination from "./components/Pagination";
 import './App.css';
 
 const App = () => {
@@ -23,6 +23,7 @@ const App = () => {
 
   const pageHandler = (e) => {
     console.log(e.target.value)
+    console.log(e.target)
     if (e.target.value == "next") {
       setPage(page + 1)
       e.preventDefault()
@@ -43,10 +44,8 @@ const App = () => {
         people={data}
         searchTerm={searchTerm}
       />
-      <Pagination 
+      <CustomPagination 
         onClick={pageHandler}
-        value={{next: "next",
-                previous: "previous"}}
       />
     </div>
   );
