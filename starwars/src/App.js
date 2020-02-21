@@ -1,17 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
+import CardContainer from './components/CardContainer';
+import SearchBar from "./components/SearchBar";
+import CustomPagination from "./components/Pagination";
 import './App.css';
 
 const App = () => {
-  // Try to think through what state you'll need for this app before starting. Then build out
-  // the state properties here.
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
 
-  // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
+  useEffect(() => {
+    axios(`https://swapi.co/api/people/?page=${page}`)
+    .then(res => { 
+      setData(res.data.results)
+      console.log(res)})
+  }, [page])
+
+  const searchHandler = (e) => {
+    setSearchTerm(e.target.value)
+  };
+
+  const pageHandler = (e) => {
+    console.log(e.target.value)
+    console.log(e.target)
+    if (e.target.value == "next") {
+      setPage(page + 1)
+      e.preventDefault()
+    } else {
+      setPage(page - 1)
+      e.preventDefault();
+    }
+  };
 
   return (
-    <div className="App">
+    <div className="container">
       <h1 className="Header">React Wars</h1>
+      <SearchBar 
+        value={searchTerm}
+        onChange={searchHandler}
+      />
+      <CardContainer 
+        people={data}
+        searchTerm={searchTerm}
+      />
+      <CustomPagination 
+        onClick={pageHandler}
+      />
     </div>
   );
 }
