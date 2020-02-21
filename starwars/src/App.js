@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import CardContainer from './components/CardContainer';
+import SearchBar from "./components/SearchBar";
 import './App.css';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 const App = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     axios("https://swapi.co/api/people/")
@@ -13,11 +16,21 @@ const App = () => {
       console.log(res)})
   }, [])
 
+  const searchHandler = (e) => {
+    setSearchTerm(e.target.value)
+  };
 
   return (
-    <div className="App">
+    <div className="container">
       <h1 className="Header">React Wars</h1>
-      <CardContainer people={data}/>
+      <SearchBar 
+        value={searchTerm}
+        onChange={searchHandler}
+      />
+      <CardContainer 
+        people={data}
+        searchTerm={searchTerm}
+      />
     </div>
   );
 }

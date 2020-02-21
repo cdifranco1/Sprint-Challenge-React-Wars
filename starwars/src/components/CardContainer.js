@@ -3,11 +3,15 @@ import { Container, Row, Col, Card } from 'reactstrap';
 import CharCard from './Card.js';
 
 
-const CardContainer = (props) => {
+const CardContainer = ({people, searchTerm}) => {
+  const checkSearch = (name) => {
+    return name.toLowerCase().includes(searchTerm.toLowerCase())
+  }
+  
   return (
     <Container>
-      <Row className="align-items-baseline">
-        {props.people.map((person) =>
+      <Row>
+        {people.filter((person) => checkSearch(person.name)).map((person) =>
         <Col md="6" lg="4">
           <CharCard person={person}/>
         </Col>
